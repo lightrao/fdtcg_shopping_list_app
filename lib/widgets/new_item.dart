@@ -1,5 +1,6 @@
 import 'package:fdtcg_shopping_list_app/data/categories.dart';
 import 'package:fdtcg_shopping_list_app/models/category.dart';
+import 'package:fdtcg_shopping_list_app/models/grocery_item.dart';
 import 'package:flutter/material.dart';
 
 class NewItem extends StatefulWidget {
@@ -21,9 +22,18 @@ class _NewItemState extends State<NewItem> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      print(_enteredName);
-      print(_enteredQuantity);
-      print(_selectedCategory.title);
+      Navigator.of(context).pop(
+        GroceryItem(
+          id: DateTime.now().toString(),
+          name: _enteredName,
+          quantity: _enteredQuantity,
+          category: _selectedCategory,
+        ),
+      );
+
+      // print(_enteredName);
+      // print(_enteredQuantity);
+      // print(_selectedCategory.title);
     }
   }
 
