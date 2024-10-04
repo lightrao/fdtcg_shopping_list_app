@@ -28,7 +28,13 @@ class _NewItemState extends State<NewItem> {
                   label: Text('Name'),
                 ),
                 validator: (value) {
-                  return 'Demo ...';
+                  if (value == null ||
+                      value.isEmpty ||
+                      value.trim().length <= 1 ||
+                      value.trim().length > 50) {
+                    return 'Must be between 1 to 50 charactors.';
+                  }
+                  return null;
                 },
               ),
               Row(
@@ -40,6 +46,15 @@ class _NewItemState extends State<NewItem> {
                         label: Text('Quantity'),
                       ),
                       initialValue: '1',
+                      validator: (value) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            int.tryParse(value.trim()) == null ||
+                            int.tryParse(value.trim())! <= 0) {
+                          return 'Must be a valid, positive number.';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                   const SizedBox(
