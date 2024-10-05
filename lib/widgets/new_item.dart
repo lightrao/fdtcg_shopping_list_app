@@ -1,6 +1,8 @@
+import 'dart:convert';
+
 import 'package:fdtcg_shopping_list_app/data/categories.dart';
 import 'package:fdtcg_shopping_list_app/models/category.dart';
-import 'package:fdtcg_shopping_list_app/models/grocery_item.dart';
+// import 'package:fdtcg_shopping_list_app/models/grocery_item.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,14 +25,30 @@ class _NewItemState extends State<NewItem> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      Navigator.of(context).pop(
-        GroceryItem(
-          id: DateTime.now().toString(),
-          name: _enteredName,
-          quantity: _enteredQuantity,
-          category: _selectedCategory,
+      final url = Uri.https(
+        'fdtcg-shopping-list-app-default-rtdb.asia-southeast1.firebasedatabase.app',
+        'shopping-list.json',
+      );
+      http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(
+          {
+            'name': _enteredName,
+            'quantity': _enteredQuantity,
+            'category': _selectedCategory.title,
+          },
         ),
       );
+
+      // Navigator.of(context).pop(
+      //   GroceryItem(
+      //     id: DateTime.now().toString(),
+      //     name: _enteredName,
+      //     quantity: _enteredQuantity,
+      //     category: _selectedCategory,
+      //   ),
+      // );
 
       // print(_enteredName);
       // print(_enteredQuantity);
