@@ -21,7 +21,7 @@ class _NewItemState extends State<NewItem> {
   var _enteredQuantity = 1;
   var _selectedCategory = categories[Categories.vegetables]!;
 
-  void _saveItem() {
+  void _saveItem() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
@@ -29,7 +29,7 @@ class _NewItemState extends State<NewItem> {
         'fdtcg-shopping-list-app-default-rtdb.asia-southeast1.firebasedatabase.app',
         'shopping-list.json',
       );
-      http.post(
+      final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
         body: json.encode(
@@ -41,14 +41,13 @@ class _NewItemState extends State<NewItem> {
         ),
       );
 
-      // Navigator.of(context).pop(
-      //   GroceryItem(
-      //     id: DateTime.now().toString(),
-      //     name: _enteredName,
-      //     quantity: _enteredQuantity,
-      //     category: _selectedCategory,
-      //   ),
-      // );
+      print(response.body);
+      print(response.statusCode);
+
+      if (!context.mounted) {
+        return;
+      }
+      Navigator.of(context).pop();
 
       // print(_enteredName);
       // print(_enteredQuantity);
