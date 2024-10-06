@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:fdtcg_shopping_list_app/data/categories.dart';
 import 'package:fdtcg_shopping_list_app/models/category.dart';
+import 'package:fdtcg_shopping_list_app/models/grocery_item.dart';
 // import 'package:fdtcg_shopping_list_app/models/grocery_item.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -41,17 +42,18 @@ class _NewItemState extends State<NewItem> {
         ),
       );
 
-      // print(response.body);
-      // print(response.statusCode);
+      final Map<String, dynamic> resData = json.decode(response.body);
 
       if (!context.mounted) {
         return;
       }
-      Navigator.of(context).pop();
-
-      // print(_enteredName);
-      // print(_enteredQuantity);
-      // print(_selectedCategory.title);
+      Navigator.of(context).pop(
+        GroceryItem(
+            id: resData['name'],
+            name: _enteredName,
+            quantity: _enteredQuantity,
+            category: _selectedCategory),
+      );
     }
   }
 
