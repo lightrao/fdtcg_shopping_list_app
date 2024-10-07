@@ -81,10 +81,25 @@ class _GroceryListState extends State<GroceryList> {
     // _loadItems();
   }
 
-  void _removeItem(GroceryItem item) {
+  void _removeItem(GroceryItem item) async {
+    final index = _groceryItems.indexOf(item);
+
     setState(() {
       _groceryItems.remove(item);
     });
+
+    final url = Uri.https(
+      'fdtcg-shopping-list-app-default-rtdb.asia-southeast1.firebasedatabase.app',
+      'shopping-list/${item.id}.json',
+    );
+
+    final response = await http.delete(url);
+    if (response.statusCode >= 400) {
+      // Optional: show error message
+      setState(() {
+        _groceryItems.insert(index, item);
+      });
+    }
   }
 
   @override
